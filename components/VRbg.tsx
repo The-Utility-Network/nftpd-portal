@@ -236,25 +236,61 @@ export default function VRBackground() {
 
       {/* Permission Modal */}
       {showPermissionModal && (
-        <div className="fixed inset-0 z-[6000] flex items-center justify-center bg-black/80 backdrop-blur-md p-6">
-          <div className="max-w-sm w-full bg-[#050a14] border border-white/20 rounded-2xl p-8 text-center shadow-2xl">
-            <img src="/Medallions/NFTPD.png" alt="NFTPD" className="w-20 h-20 mx-auto mb-6" />
-            <h2 className="text-2xl font-bold mb-4 tracking-tight">ACTIVATE_VR_CORE</h2>
-            <p className="text-white/60 mb-8 font-light leading-relaxed">
-              Grant access to your device sensors to enable immersive motion-tracking in the NFTPD atmosphere.
-            </p>
-            <button
-              onClick={requestMotionPermission}
-              className="w-full py-4 bg-white text-black font-bold rounded-full transition-transform active:scale-95 hover:bg-white/90"
-            >
-              AUTHORIZE ACCESS
-            </button>
-            <button
-              onClick={() => setShowPermissionModal(false)}
-              className="mt-4 text-white/40 text-sm hover:text-white/60"
-            >
-              Skip for now
-            </button>
+        <div className="fixed inset-0 z-[6000] flex items-center justify-center bg-black/90 backdrop-blur-xl p-6 font-mono">
+          {/* Theme Background Elements */}
+          <div className="absolute inset-0 opacity-20 pointer-events-none"
+            style={{
+              backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+              backgroundSize: '40px 40px'
+            }}
+          />
+          <div className="absolute inset-0 opacity-10 pointer-events-none"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.1) 3px)'
+            }}
+          />
+
+          <div className="relative max-w-sm w-full bg-[#050a14] border border-white/20 p-8 text-center shadow-[0_0_50px_rgba(255,255,255,0.1)] overflow-hidden">
+            {/* HUD Corners */}
+            <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-white/40" />
+            <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white/40" />
+            <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-white/40" />
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-white/40" />
+
+            {/* Content */}
+            <div className="relative z-10">
+              <div className="inline-block p-4 rounded-full border border-white/10 bg-white/5 mb-6">
+                <img src="/Medallions/NFTPD.png" alt="NFTPD" className="w-16 h-16 animate-pulse" />
+              </div>
+
+              <h2 className="text-xl font-bold mb-2 tracking-[0.2em] text-white">SYSTEM_ACCESS_REQ</h2>
+              <div className="h-px w-24 bg-white/20 mx-auto mb-6" />
+
+              <p className="text-white/50 mb-10 text-xs uppercase tracking-widest leading-relaxed">
+                Initialize motion-tracking protocols to synchronize device telemetry with the NFTPD security atmosphere.
+              </p>
+
+              <button
+                onClick={requestMotionPermission}
+                className="group relative w-full py-4 bg-white text-black font-bold uppercase tracking-widest overflow-hidden transition-all active:scale-95"
+              >
+                <span className="relative z-10">GRANT_AUTHORIZATION</span>
+                <div className="absolute inset-0 bg-gray-200 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              </button>
+
+              <button
+                onClick={() => setShowPermissionModal(false)}
+                className="mt-6 text-white/30 text-[10px] uppercase tracking-[0.3em] hover:text-white/60 transition-colors"
+              >
+                [ CONTINUE_FLAT_VIEW ]
+              </button>
+            </div>
+
+            {/* Terminal Aesthetic Lines */}
+            <div className="absolute top-4 right-4 text-[8px] text-white/10 text-right font-mono">
+              SEC_LEVEL: 04<br />
+              ZONE: NFTPD_PORTAL_V4
+            </div>
           </div>
         </div>
       )}
