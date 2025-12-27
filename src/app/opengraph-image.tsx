@@ -9,13 +9,17 @@ export const contentType = 'image/png';
 const THEME = '#ffffff';
 
 export default async function Image() {
-    // Load Medallion
+    // Load Assets
     let medallionBase64 = '';
+    let backgroundBase64 = '';
     try {
         const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'NFTPD.png'));
         medallionBase64 = `data:image/png;base64,${medallionData.toString('base64')}`;
+
+        const backgroundData = readFileSync(join(process.cwd(), 'public', 'radio.jpg'));
+        backgroundBase64 = `data:image/jpeg;base64,${backgroundData.toString('base64')}`;
     } catch (e) {
-        console.error("Failed to load medallion", e);
+        console.error("Failed to load assets", e);
     }
 
     return new ImageResponse(
@@ -30,13 +34,30 @@ export default async function Image() {
                 position: 'relative',
                 fontFamily: 'Helvetica, Arial, sans-serif'
             }}>
-                {/* 1. Base Background Art (CSS Artwork) */}
-                <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'radial-gradient(circle at 50% 50%, #111 0%, #000 70%)',
-                    display: 'flex'
-                }} />
+                {/* 1. Base Background Art */}
+                {backgroundBase64 ? (
+                    <img
+                        src={backgroundBase64}
+                        alt="Background"
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            opacity: 1
+                        }}
+                    />
+                ) : (
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'radial-gradient(circle at 50% 50%, #111 0%, #000 70%)',
+                        display: 'flex'
+                    }} />
+                )}
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex' }} />
 
                 {/* Grid Pattern */}
                 <div style={{
