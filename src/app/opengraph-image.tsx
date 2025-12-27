@@ -92,11 +92,10 @@ export default async function Image() {
                     alignItems: 'flex-end',
                     justifyContent: 'center',
                     padding: '40px 260px 40px 40px',
-                    boxShadow: 'inset 2px 2px 20px rgba(255,255,255,0.1)',
-                    background: 'rgba(255,255,255,0.05)'
+                    boxShadow: 'inset 2px 2px 30px rgba(0,0,0,0.8)',
+                    background: 'rgba(0,0,0,0.85)'
                 }}>
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.02)' }} />
-                    <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.15)', borderRight: 'none', borderRadius: '40px 0 0 40px' }} />
+                    <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.1)', borderRight: 'none', borderRadius: '40px 0 0 40px', display: 'flex' }} />
 
                     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', zIndex: '20' }}>
                         <div style={{ fontSize: 44, fontWeight: 700, color: 'white', lineHeight: 1.2, textAlign: 'right', textShadow: '0 4px 30px rgba(0,0,0,0.9)' }}>
@@ -130,11 +129,10 @@ export default async function Image() {
                     alignItems: 'flex-start',
                     justifyContent: 'center',
                     padding: '40px 40px 40px 240px',
-                    boxShadow: 'inset -2px 2px 20px rgba(255,255,255,0.1)',
-                    background: 'rgba(255,255,255,0.05)'
+                    boxShadow: 'inset -2px 2px 30px rgba(0,0,0,0.8)',
+                    background: 'rgba(0,0,0,0.85)'
                 }}>
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.02)' }} />
-                    <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.25)', borderLeft: 'none', borderRadius: '0 40px 40px 0' }} />
+                    <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.1)', borderLeft: 'none', borderRadius: '0 40px 40px 0', display: 'flex' }} />
 
                     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', zIndex: '20' }}>
                         <div style={{ fontSize: 40, color: 'white', fontWeight: 300, lineHeight: 1.2, display: 'flex', flexDirection: 'column', maxWidth: 640, textShadow: '0 4px 30px rgba(0,0,0,0.9)' }}>
@@ -159,11 +157,10 @@ export default async function Image() {
                     overflow: 'hidden',
                     display: 'flex',
                     zIndex: '40',
-                    boxShadow: 'inset 0 0 20px rgba(255,255,255,0.3)',
+                    boxShadow: 'inset 0 0 40px rgba(0,0,0,0.9)',
                     border: `4px solid ${THEME}`,
-                    background: 'rgba(5, 5, 5, 0.8)'
+                    background: 'rgba(0, 0, 0, 0.95)'
                 }}>
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                 </div>
 
                 {/* Visual Medallion */}
