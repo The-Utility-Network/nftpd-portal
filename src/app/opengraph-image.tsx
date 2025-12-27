@@ -159,7 +159,7 @@ export default async function Image() {
                 }}>
                     <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: `4px solid ${THEME}`, boxShadow: `0 0 50px ${THEME}40`, display: 'flex' }} />
                     {medallionBase64 && (
-                        <img src={medallionBase64} width={700} height={700} style={{ position: 'relative', width: 700, height: 700, objectFit: 'cover', borderRadius: '50%' }} />
+                        <img src={medallionBase64} alt="NFTPD Medallion" width={700} height={700} style={{ position: 'relative', width: 700, height: 700, objectFit: 'cover', borderRadius: '50%' }} />
                     )}
                 </div>
 
