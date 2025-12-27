@@ -90,79 +90,39 @@ export default function Mythology() {
     getDiamondAddress().then(setContractAddress);
   }, []);
 
-  // Load Stories
-  useEffect(() => {
-    if (contractAddress) fetchStories();
-  }, [contractAddress]);
+  const handleChapterSelect = React.useCallback(async (chapter: Chapter) => {
+    setSelectedChapter(chapter);
 
-  // Check Role
-  useEffect(() => {
-    if (account && contractAddress) {
-      checkPublisherRole();
-    } else {
-      setIsPublisher(false);
-    }
-  }, [account, contractAddress]);
-
-  // Mobile: Auto-collapse nav when selecting a section to read
-  useEffect(() => {
-    // Basic check for mobile width
-    if (typeof window !== 'undefined' && window.innerWidth < 1024 && selectedSection) {
-      setIsNavOpen(false);
-    }
-  }, [selectedSection]);
-
-  const checkPublisherRole = async () => {
-    // Dev Bypass
-    if (process.env.NEXT_PUBLIC_PUBLISHER_DEV === 'true') {
-      setIsPublisher(true);
+    if (chapter.id === 'demo-c') {
+      const demoSection = {
+        id: 'demo-s',
+        title: 'First Entry',
+        body: '# Secure Transmission\n\nSystem online. The blacklists are synchronizing.\n\n> "Trust requires verification."\n\nWelcome to the NFTPD archives.',
+        mediaURI: '',
+        timePublished: BigInt(Date.now() / 1000),
+        author: '0x00...000',
+        sources: [],
+        keywords: []
+      };
+      setSections([demoSection]);
+      setSelectedSection(demoSection);
       return;
     }
 
     try {
       const contract = getContract({ client, chain: base, address: contractAddress, abi });
-      // Check for Commander role
-      const hasRole = await readContract({
-        contract,
-        method: 'ieHasRole',
-        params: ["Commander", account?.address as string]
-      });
-
-      setIsPublisher(hasRole as boolean);
-    } catch (e) {
-      console.error("Failed to check role.", e);
-      setIsPublisher(false);
-    }
-  }
-
-  const fetchStories = async () => {
-    try {
-      setLoading(true);
-      const contract = getContract({ client, chain: base, address: contractAddress, abi });
-      const data = await readContract({ contract, method: 'getAllStories', params: [] });
-
+      const data = await readContract({ contract, method: 'getChapterSections', params: [BigInt(chapter.id)] });
       const formatted = (data as any[]).map((s: any) => ({
+        ...s,
         id: s.id.toString(),
-        title: s.title
+        year: s.timePublished ? new Date(Number(s.timePublished) * 1000).getFullYear() : 'Unknown'
       }));
-      setStories(formatted);
+      setSections(formatted);
+      if (formatted.length > 0) setSelectedSection(formatted[0]);
+    } catch (e) { console.error(e); }
+  }, [contractAddress]);
 
-      if (formatted.length > 0 && !selectedStory) {
-        handleStorySelect(formatted[0]); // Auto-select first
-      } else if (formatted.length === 0 && process.env.NEXT_PUBLIC_MYTHOLOGY_DEMO === 'true') {
-        // Dummy data for demo if enabled
-        const demoStory = { id: 'demo', title: 'NFTPD Archive (Demo)' };
-        setStories([demoStory]);
-        handleStorySelect(demoStory);
-      }
-      setLoading(false);
-    } catch (e) {
-      console.error("Failed to load stories", e);
-      setLoading(false);
-    }
-  };
-
-  const handleStorySelect = async (story: Story) => {
+  const handleStorySelect = React.useCallback(async (story: Story) => {
     setSelectedStory(story);
     // Don't clear sub-states immediately to avoid flickers if we want to cache, but for now simple:
     setSelectedChapter(null);
@@ -188,35 +148,71 @@ export default function Mythology() {
         handleChapterSelect(formatted[0]);
       }
     } catch (e) { console.error(e); }
-  };
+  }, [contractAddress, handleChapterSelect]);
 
-  const handleChapterSelect = async (chapter: Chapter) => {
-    setSelectedChapter(chapter);
-
-    if (chapter.id === 'demo-c') {
-      setSections([{
-        id: 'demo-s', title: 'First Entry', body: '# Secure Transmission\n\nSystem online. The blacklists are synchronizing.\n\n> "Trust requires verification."\n\nWelcome to the NFTPD archives.',
-        mediaURI: '', timePublished: BigInt(Date.now() / 1000), author: '0x00...000', sources: [], keywords: []
-      }]);
-      setSelectedSection({
-        id: 'demo-s', title: 'First Entry', body: '# Secure Transmission\n\nSystem online. The blacklists are synchronizing.\n\n> "Trust requires verification."\n\nWelcome to the NFTPD archives.',
-        mediaURI: '', timePublished: BigInt(Date.now() / 1000), author: '0x00...000', sources: [], keywords: []
-      });
+  const checkPublisherRole = React.useCallback(async () => {
+    // Dev Bypass
+    if (process.env.NEXT_PUBLIC_PUBLISHER_DEV === 'true') {
+      setIsPublisher(true);
       return;
     }
 
     try {
       const contract = getContract({ client, chain: base, address: contractAddress, abi });
-      const data = await readContract({ contract, method: 'getChapterSections', params: [BigInt(chapter.id)] });
+      // Check for Commander role
+      const hasRole = await readContract({
+        contract,
+        method: 'ieHasRole',
+        params: ["Commander", account?.address as string]
+      });
+
+      setIsPublisher(hasRole as boolean);
+    } catch (e) {
+      console.error("Failed to check role.", e);
+      setIsPublisher(false);
+    }
+  }, [account, contractAddress]);
+
+  const fetchStories = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      const contract = getContract({ client, chain: base, address: contractAddress, abi });
+      const data = await readContract({ contract, method: 'getAllStories', params: [] });
+
       const formatted = (data as any[]).map((s: any) => ({
-        ...s,
         id: s.id.toString(),
-        year: s.timePublished ? new Date(Number(s.timePublished) * 1000).getFullYear() : 'Unknown'
+        title: s.title
       }));
-      setSections(formatted);
-      if (formatted.length > 0) setSelectedSection(formatted[0]);
-    } catch (e) { console.error(e); }
-  };
+      setStories(formatted);
+
+      if (formatted.length > 0 && !selectedStory) {
+        handleStorySelect(formatted[0]); // Auto-select first
+      } else if (formatted.length === 0 && process.env.NEXT_PUBLIC_MYTHOLOGY_DEMO === 'true') {
+        // Dummy data for demo if enabled
+        const demoStory = { id: 'demo', title: 'NFTPD Archive (Demo)' };
+        setStories([demoStory]);
+        handleStorySelect(demoStory);
+      }
+      setLoading(false);
+    } catch (e) {
+      console.error("Failed to load stories", e);
+      setLoading(false);
+    }
+  }, [contractAddress, selectedStory, handleStorySelect]);
+
+  // Load Stories
+  useEffect(() => {
+    if (contractAddress) fetchStories();
+  }, [contractAddress, fetchStories]);
+
+  // Check Role
+  useEffect(() => {
+    if (account && contractAddress) {
+      checkPublisherRole();
+    } else {
+      setIsPublisher(false);
+    }
+  }, [account, contractAddress, checkPublisherRole]);
 
   // --- WORKSHOP LOGIC ---
   const toggleWorkshop = () => {

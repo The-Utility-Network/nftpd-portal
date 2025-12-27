@@ -280,7 +280,7 @@ export default function Diamond3D({ facets, methodNames, facetNames, facetAbis =
         facetAddress: f.facetAddress,
       };
     });
-  }, [facets, methodNames]);
+  }, [facets, methodNames, facetNames, isMobileView]);
 
   // listen to nav events from in-ring arrows rendered via Html (after rings is defined)
   React.useEffect(() => {
