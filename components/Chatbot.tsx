@@ -231,7 +231,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
         <div className="p-4 border-b border-white/10 bg-white/5 flex items-center justify-between">
           <h2 className="text-xl font-bold tracking-widest text-white flex items-center gap-2">
             <CpuChipIcon className="w-5 h-5 text-white" />
-            WALTER<span className="text-white/40">//</span>AI
+            WALTER<span className="text-white/40">{"//"}</span>AI
           </h2>
           <div className="flex gap-1">
             <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />

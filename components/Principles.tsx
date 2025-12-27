@@ -294,7 +294,7 @@ const OperatingPrinciples = () => {
             Thank You for Signing!
           </h2>
           <p className="text-white/80 leading-relaxed">
-            Your commitment to our operating principles strengthens our company's foundation and fosters a culture of excellence and integrity.
+            Your commitment to our operating principles strengthens our company&apos;s foundation and fosters a culture of excellence and integrity.
           </p>
         </div>
       )}

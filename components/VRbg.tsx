@@ -177,7 +177,7 @@ export default function VRBackground() {
       {!isLoaded && (
         <div className="absolute inset-0 z-[5000] flex items-center justify-center bg-black">
           <div className="flex flex-col items-center">
-            <img src="/Medallions/NFTPD.png" className="w-16 h-16 animate-pulse mb-4" />
+            <img src="/Medallions/NFTPD.png" alt="NFTPD Logo" className="w-16 h-16 animate-pulse mb-4" />
             <div className="text-white font-mono tracking-widest text-xl">
               INITIALIZING_PORTAL...
             </div>

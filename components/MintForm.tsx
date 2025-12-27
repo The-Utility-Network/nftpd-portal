@@ -298,7 +298,7 @@ export default function Form() {
             <div>
               <h2 className="text-2xl font-bold tracking-widest text-white uppercase flex items-center gap-2">
                 <BanknotesIcon className="w-6 h-6 text-white" />
-                MINT<span className="text-white/40">//</span>TERMINAL
+                MINT<span className="text-white/40">{"//"}</span>TERMINAL
               </h2>
               <span className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold pl-1">Secure Transaction Layer</span>
             </div>

@@ -154,7 +154,7 @@ export default function LearnForm() {
             </div>
             <div>
               <h2 className="text-xl md:text-2xl font-bold tracking-widest text-white uppercase leading-none">
-                LEARN<span className="text-white/40">//</span>HUB
+                LEARN<span className="text-white/40">{"//"}</span>HUB
               </h2>
               <span className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold">Encrypted Education Channel</span>
             </div>
@@ -264,7 +264,7 @@ export default function LearnForm() {
                             <div>
                               <div className="flex items-center gap-2 text-[10px] text-white/40 mb-2 uppercase tracking-wider font-bold">
                                 <span className="bg-white/10 px-1.5 py-0.5 rounded border border-white/5">Medium</span>
-                                <span>//</span>
+                                <span>{"//"}</span>
                                 <span>{new Date(article.pubDate).toLocaleDateString()}</span>
                               </div>
                               <h3 className={`font-bold text-white leading-tight group-hover:text-blue-200 transition-colors line-clamp-2 ${viewMode === 'list' ? 'text-lg' : 'text-lg mb-4'}`}>
