@@ -7,6 +7,7 @@ import * as THREE from 'three';
 
 interface VRSceneProps {
   onLoad?: () => void;
+  orientation?: THREE.Euler | null;
 }
 
 // The core visual component: A large sphere with the "radio.jpg" texture on the inside.
@@ -47,7 +48,7 @@ function RadioBiosphere({ onLoad }: { onLoad?: () => void }) {
   );
 }
 
-const VRScene: React.FC<VRSceneProps> = ({ onLoad }) => {
+const VRScene: React.FC<VRSceneProps> = ({ onLoad, orientation }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -67,15 +68,29 @@ const VRScene: React.FC<VRSceneProps> = ({ onLoad }) => {
           <RadioBiosphere onLoad={onLoad} />
         </React.Suspense>
 
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          enableDamping
-          rotateSpeed={-0.5} // Invert rotation feel for inside-sphere
-        />
+        {!orientation && (
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            enableDamping
+            rotateSpeed={-0.5} // Invert rotation feel for inside-sphere
+          />
+        )}
+
+        {/* Sync Camera with Orientation */}
+        <CameraHandler orientation={orientation} />
       </Canvas>
     </div>
   );
 };
+
+function CameraHandler({ orientation }: { orientation?: THREE.Euler | null }) {
+  useFrame((state) => {
+    if (orientation) {
+      state.camera.quaternion.setFromEuler(orientation);
+    }
+  });
+  return null;
+}
 
 export default VRScene;

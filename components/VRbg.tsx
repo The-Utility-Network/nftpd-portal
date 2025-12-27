@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import * as THREE from 'three';
 import VRScene from './VRScene';
 import PortalHUD from './PortalHUD';
 import AnalyzePanel from './Analyze';
@@ -21,6 +22,11 @@ export default function VRBackground() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Motion Permission State
+  const [showPermissionModal, setShowPermissionModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [deviceOrientation, setDeviceOrientation] = useState<THREE.Euler | null>(null);
 
   // Scene State (for VRScene prop drift)
   const [isPaused, setIsPaused] = useState(false);
@@ -47,6 +53,54 @@ export default function VRBackground() {
       }
     };
   }, []);
+
+  // Detect Mobile & Setup Motion
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    };
+    checkMobile();
+
+    // If iOS 13+, we might need permission
+    if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+      setShowPermissionModal(true);
+    } else {
+      // Standard direct listener for Android or older desktop/mobile
+      window.addEventListener('deviceorientation', handleOrientation);
+    }
+
+    return () => {
+      window.removeEventListener('deviceorientation', handleOrientation);
+    };
+  }, []);
+
+  const handleOrientation = (event: DeviceOrientationEvent) => {
+    if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
+      // Convert deg to rad for Three.js
+      const alpha = THREE.MathUtils.degToRad(event.alpha);
+      const beta = THREE.MathUtils.degToRad(event.beta);
+      const gamma = THREE.MathUtils.degToRad(event.gamma);
+      setDeviceOrientation(new THREE.Euler(beta, gamma, alpha));
+    }
+  };
+
+  const requestMotionPermission = async () => {
+    if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+      try {
+        const permissionState = await (DeviceOrientationEvent as any).requestPermission();
+        if (permissionState === 'granted') {
+          window.addEventListener('deviceorientation', handleOrientation);
+          setShowPermissionModal(false);
+        } else {
+          alert('Permission denied. Motion viewing disabled.');
+          setShowPermissionModal(false);
+        }
+      } catch (e) {
+        console.error('DeviceOrientation permission error:', e);
+        setShowPermissionModal(false);
+      }
+    }
+  };
 
   const toggleMusic = () => {
     if (audioRef.current) {
@@ -143,11 +197,12 @@ export default function VRBackground() {
         currentView={currentView}
       />
 
-      {/* Music Control (Bottom Right or elsewhere - adaptable) */}
+      {/* Music Control */}
       <button
         onClick={toggleMusic}
         className="fixed z-[2000] rounded-full transition-all duration-300 hover:scale-110 pointer-events-auto
-          bottom-4 right-4 p-2 md:bottom-8 md:right-8 md:p-3"
+          top-[env(safe-area-inset-top,1rem)] left-1/2 -translate-x-1/2 p-2 
+          md:top-auto md:left-auto md:translate-x-0 md:bottom-8 md:right-8 md:p-3"
         style={{
           background: 'rgba(0, 0, 0, 0.6)',
           backdropFilter: 'blur(10px)',
@@ -156,9 +211,18 @@ export default function VRBackground() {
         title="Toggle Music"
       >
         {isPlaying ? (
-          <div className="animate-pulse text-white">🔊</div> // Simple icon or svg
+          <div className="animate-pulse text-white">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="6" y="4" width="4" height="16"></rect>
+              <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+          </div>
         ) : (
-          <div className="text-white/50">🔇</div>
+          <div className="text-white/50">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="white" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
         )}
       </button>
 
@@ -166,12 +230,34 @@ export default function VRBackground() {
       <div className="absolute inset-0 z-0 select-none">
         <VRScene
           onLoad={() => setIsLoaded(true)}
-        // Pass props if VRScene supports them (NFTPD VRScene might differ from TUC)
-        // NFTPD VRScene (Step 113) takes `onLoad`.
-        // If we want params like speed/visualMode, we need to check if NFTPD VRScene supports them.
-        // Assuming basic support or ignored if not.
+          orientation={deviceOrientation}
         />
       </div>
+
+      {/* Permission Modal */}
+      {showPermissionModal && (
+        <div className="fixed inset-0 z-[6000] flex items-center justify-center bg-black/80 backdrop-blur-md p-6">
+          <div className="max-w-sm w-full bg-[#050a14] border border-white/20 rounded-2xl p-8 text-center shadow-2xl">
+            <img src="/Medallions/NFTPD.png" alt="NFTPD" className="w-20 h-20 mx-auto mb-6" />
+            <h2 className="text-2xl font-bold mb-4 tracking-tight">ACTIVATE_VR_CORE</h2>
+            <p className="text-white/60 mb-8 font-light leading-relaxed">
+              Grant access to your device sensors to enable immersive motion-tracking in the NFTPD atmosphere.
+            </p>
+            <button
+              onClick={requestMotionPermission}
+              className="w-full py-4 bg-white text-black font-bold rounded-full transition-transform active:scale-95 hover:bg-white/90"
+            >
+              AUTHORIZE ACCESS
+            </button>
+            <button
+              onClick={() => setShowPermissionModal(false)}
+              className="mt-4 text-white/40 text-sm hover:text-white/60"
+            >
+              Skip for now
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Loading Overlay */}
       {!isLoaded && (
