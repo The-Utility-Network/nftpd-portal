@@ -42,7 +42,7 @@ export function DropdownMenu({ anchor = 'bottom', ...props }: HeadlessMenuItemsP
         {...props}
         anchor={anchor}
         className={clsx(
-          props.className,
+          props.className as string,
 
           // Anchor positioning
           '[--anchor-gap:theme(spacing.2)] [--anchor-padding:theme(spacing.3)] data-[anchor~=end]:[--anchor-offset:4px] data-[anchor~=start]:[--anchor-offset:-4px]',
@@ -77,7 +77,7 @@ export function DropdownItem(props: { href?: string } & HeadlessMenuItemProps<'b
       type={props.href ? undefined : 'button'}
       {...props}
       className={clsx(
-        props.className,
+        props.className as string,
 
         // Base styles
         'group cursor-default rounded-lg px-3.5 py-2.5 focus:outline-none sm:px-3 sm:py-1.5',

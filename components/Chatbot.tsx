@@ -129,7 +129,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
     [key: string]: any;
   }
 
-  const markdownComponents: Partial<Components> = {
+  const markdownComponents: any = {
     code: ({ inline, className, children, ...props }: CustomCodeProps) => {
       const match = /language-(\w+)/.exec(className || "");
       const codeString = String(children).replace(/\n$/, "");

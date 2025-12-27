@@ -36,7 +36,7 @@ function Chatbot({
   setOptionsVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
-  const [typingMessage, setTypingMessage] = useState<string>(''); 
+  const [typingMessage, setTypingMessage] = useState<string>('');
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isThinking, setIsThinking] = useState<boolean>(false);
   const [threadId, setThreadId] = useState<string | null>(null); // Store the current thread ID
@@ -80,7 +80,7 @@ function Chatbot({
       setIsThinking(true);
       setTypingMessage('');
       const responseMessage = await getOpenAIResponse(message);
-      
+
       // Only add the response if the cancelResponse flag is false
       if (!cancelResponse.current) {
         setMessages((prevMessages) => [
@@ -118,7 +118,7 @@ function Chatbot({
         if (done) break;
         const chunk = decoder.decode(value);
         if (cancelResponse.current) {
-          try { await reader.cancel(); } catch {}
+          try { await reader.cancel(); } catch { }
           break;
         }
         fullText += chunk;
@@ -187,7 +187,7 @@ function Chatbot({
         await navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => setCopied(false), 1200);
-      } catch {}
+      } catch { }
     };
     return (
       <div className="relative group">
@@ -226,7 +226,7 @@ function Chatbot({
                 <div className={`relative z-10 py-4 px-5 rounded-2xl border ${msg.sender === 'user' ? 'border-white/10 bg-white/10 text-black' : 'border-white/10 bg-white/90 text-black'} backdrop-blur-xl shadow-lg`}
                   style={{ maxWidth: '100%', wordWrap: 'break-word' }}>
                   {msg.sender === 'assistant' ? (
-                    <ReactMarkdown 
+                    <ReactMarkdown
                       remarkPlugins={[remarkGfm, remarkBreaks]}
                       components={{
                         code({ node, inline, className, children, ...props }: any) {
@@ -238,53 +238,53 @@ function Chatbot({
                             <CodeBlock className={className} {...props}>{children}</CodeBlock>
                           );
                         },
-                        p({ children }) {
+                        p({ children }: any) {
                           return <p className="mb-3 leading-relaxed">{children}</p>;
                         },
-                        h1({ children }) {
+                        h1({ children }: any) {
                           return <h1 className="text-xl font-bold mb-3 tracking-tight">{children}</h1>;
                         },
-                        h2({ children }) {
+                        h2({ children }: any) {
                           return <h2 className="text-lg font-semibold mb-2 tracking-tight">{children}</h2>;
                         },
-                        h3({ children }) {
+                        h3({ children }: any) {
                           return <h3 className="text-base font-semibold mb-2 tracking-tight">{children}</h3>;
                         },
-                        blockquote({ children }) {
+                        blockquote({ children }: any) {
                           return (
                             <blockquote className="my-3 pl-4 border-l-4 border-black/30 text-black/80">{children}</blockquote>
                           );
                         },
-                        ul({ children }) {
+                        ul({ children }: any) {
                           return <ul className="list-disc list-inside space-y-1 mb-3">{children}</ul>;
                         },
-                        li({ children }) {
+                        li({ children }: any) {
                           return <li className="">{children}</li>;
                         },
-                        a({ href, children }) {
+                        a({ href, children }: any) {
                           return <a href={href as string} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800 underline underline-offset-4">{children}</a>;
                         },
                         hr() {
                           return <hr className="my-4 border-white/10" />;
                         },
-                        table({ children }) {
+                        table({ children }: any) {
                           return <div className="overflow-auto my-3"><table className="w-full text-sm border-separate border-spacing-0 rounded-xl overflow-hidden">{children}</table></div>;
                         },
-                        thead({ children }) {
+                        thead({ children }: any) {
                           return <thead className="bg-white/5 text-white">{children}</thead>;
                         },
-                        tbody({ children }) {
+                        tbody({ children }: any) {
                           return <tbody className="">{children}</tbody>;
                         },
-                        th({ children }) {
+                        th({ children }: any) {
                           return <th className="text-left px-3 py-2 border-b border-white/10">{children}</th>;
                         },
-                        td({ children }) {
+                        td({ children }: any) {
                           return <td className="px-3 py-2 border-b border-white/5">{children}</td>;
                         },
-                      }}>
+                      } as any}>
                       {msg.text}
-                    </ReactMarkdown>                
+                    </ReactMarkdown>
                   ) : (
                     msg.text
                   )}
@@ -334,7 +334,7 @@ function Chatbot({
               </button>
             ))}
           </div>
-        </div>            
+        </div>
       )}
 
       <div className="chat-input-area flex items-center space-x-2 mb-16">
@@ -344,8 +344,8 @@ function Chatbot({
             value={input}
             onChange={handleInputChange}
             className="flex-grow p-3 rounded-full text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white/20 text-sm sm:text-base border border-white/20 bg-gray-800/60 backdrop-blur-xl"
-            style={{ 
-              color: 'white', 
+            style={{
+              color: 'white',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
               backgroundColor: 'rgba(31, 41, 55, 0.6)',
@@ -360,16 +360,16 @@ function Chatbot({
               aria-label="Open voice agent"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 1v10"/>
-                <rect x="9" y="1" width="6" height="12" rx="3"/>
-                <path d="M5 11a7 7 0 0 0 14 0"/>
-                <path d="M12 19v4"/>
-                <path d="M8 23h8"/>
+                <path d="M12 1v10" />
+                <rect x="9" y="1" width="6" height="12" rx="3" />
+                <path d="M5 11a7 7 0 0 0 14 0" />
+                <path d="M12 19v4" />
+                <path d="M8 23h8" />
               </svg>
             </button>
           )}
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="p-3 text-white rounded-full shadow-lg bg-white/10 hover:bg-white/20 focus:outline-none border border-white/10 backdrop-blur-xl"
             style={{
               backdropFilter: 'blur(10px)',
@@ -382,8 +382,8 @@ function Chatbot({
           </button>
 
           {!optionsVisible && (
-            <button 
-              onClick={startNewChat} 
+            <button
+              onClick={startNewChat}
               className="p-3 text-white rounded-full shadow-lg bg-white/10 hover:bg-white/20 focus:outline-none border border-white/10 backdrop-blur-xl"
               style={{
                 backdropFilter: 'blur(10px)',

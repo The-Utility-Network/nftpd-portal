@@ -40,6 +40,9 @@ import { ethers, formatEther, parseEther, parseUnits } from 'ethers';
 import { getDiamondAddress } from '../primitives/Diamond';
 import { createThirdwebClient } from 'thirdweb';
 
+// Recharts components casted to any for React 19 JSX compatibility
+const [PieChartAny, PieAny, CellAny, TooltipAny, ResponsiveContainerAny, LineChartAny, LineAny, XAxisAny, YAxisAny, CartesianGridAny, LegendAny] = [PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend] as any[];
+
 // Initialize the client in-browser from server-provided clientId
 const clientPromise = (async () => {
   try {
@@ -639,9 +642,9 @@ const Reserve = () => {
     }));
 
     return (
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
+      <ResponsiveContainerAny width="100%" height={300}>
+        <PieChartAny>
+          <PieAny
             data={data}
             dataKey="value"
             nameKey="name"
@@ -652,14 +655,14 @@ const Reserve = () => {
             fill="#8884d8"
             paddingAngle={5}
           >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.5)" />
+            {data.map((entry: any, index: number) => (
+              <CellAny key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.5)" />
             ))}
-          </Pie>
-          <Tooltip contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} />
-          <Legend wrapperStyle={{ color: '#fff' }} />
-        </PieChart>
-      </ResponsiveContainer>
+          </PieAny>
+          <TooltipAny contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} />
+          <LegendAny wrapperStyle={{ color: '#fff' }} />
+        </PieChartAny>
+      </ResponsiveContainerAny>
     );
   };
 
@@ -747,18 +750,18 @@ const Reserve = () => {
               <h3 className="text-lg font-bold">Reserves History</h3>
             </div>
             <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={balanceHistory}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="timestamp" stroke="#666" fontSize={12} tickFormatter={(t) => t.split('/')[0] + '/' + t.split('/')[1]} />
-                  <YAxis stroke="#666" fontSize={12} />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend />
-                  <Line type="monotone" dataKey="balance" stroke="#fff" strokeWidth={2} dot={false} activeDot={{ r: 6 }} name="ETH" />
-                  <Line type="monotone" dataKey="usdc" stroke="#4ade80" strokeWidth={2} dot={false} name="USDC" />
-                  <Line type="monotone" dataKey="cbbtc" stroke="#fbbf24" strokeWidth={2} dot={false} name="BTC" />
-                </LineChart>
-              </ResponsiveContainer>
+              <ResponsiveContainerAny width="100%" height="100%">
+                <LineChartAny data={balanceHistory}>
+                  <CartesianGridAny strokeDasharray="3 3" stroke="#333" />
+                  <XAxisAny dataKey="timestamp" stroke="#666" fontSize={12} tickFormatter={(t: any) => t.split('/')[0] + '/' + t.split('/')[1]} />
+                  <YAxisAny stroke="#666" fontSize={12} />
+                  <TooltipAny content={<CustomTooltip />} />
+                  <LegendAny />
+                  <LineAny type="monotone" dataKey="balance" stroke="#fff" strokeWidth={2} dot={false} activeDot={{ r: 6 }} name="ETH" />
+                  <LineAny type="monotone" dataKey="usdc" stroke="#4ade80" strokeWidth={2} dot={false} name="USDC" />
+                  <LineAny type="monotone" dataKey="cbbtc" stroke="#fbbf24" strokeWidth={2} dot={false} name="BTC" />
+                </LineChartAny>
+              </ResponsiveContainerAny>
             </div>
           </div>
 

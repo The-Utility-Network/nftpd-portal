@@ -43,6 +43,7 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Divider,
   Tooltip,
@@ -1694,7 +1695,7 @@ const Mythology = () => {
         selectedWriteSection,
       };
       localStorage.setItem(draftKey, JSON.stringify(payload));
-    } catch {}
+    } catch { }
   }, [newSectionData, selectedWriteStory, selectedWriteChapter, selectedWriteSection, suspendDraftSave]);
 
   // Draft: load
@@ -1719,7 +1720,7 @@ const Mythology = () => {
       if (!seen) {
         setTutorialOpen(true);
       }
-    } catch {}
+    } catch { }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -1734,7 +1735,7 @@ const Mythology = () => {
         const seenWriter = localStorage.getItem(tutorialKey);
         if (!seenWriter) setTutorialOpen(true);
       }
-    } catch {}
+    } catch { }
   }, [activeTab]);
 
   // Ensure only the matching tutorial is visible for the current tab
@@ -1768,7 +1769,7 @@ const Mythology = () => {
     { title: 'Section Metadata', body: 'Use the Metadata ribbon to add a Title and optional Media, Sources, and Keywords. These will render in the document automatically.' },
     { title: 'Write and Publish', body: 'Write your content in the main canvas. When ready, go to the Publish ribbon to publish and download a share card.' },
   ];
-  const closeTutorial = () => { try { localStorage.setItem(tutorialKey, 'true'); } catch {}; setTutorialOpen(false); setTutorialStep(0); };
+  const closeTutorial = () => { try { localStorage.setItem(tutorialKey, 'true'); } catch { }; setTutorialOpen(false); setTutorialStep(0); };
 
   const readerTutorialSteps = [
     { title: 'Welcome', body: 'Welcome to the Library. We\'ll show you how to browse and read stories.' },
@@ -1777,7 +1778,7 @@ const Mythology = () => {
     { title: 'Open a Section', body: 'Click a Section to load its title, media, sources, and content.' },
     { title: 'Customize Reading', body: 'Use the controls at the top to change font and background. Enjoy your reading!' },
   ];
-  const closeReaderTutorial = () => { try { localStorage.setItem(readerTutorialKey, 'true'); } catch {}; setReaderTutorialOpen(false); setReaderTutorialStep(0); };
+  const closeReaderTutorial = () => { try { localStorage.setItem(readerTutorialKey, 'true'); } catch { }; setReaderTutorialOpen(false); setReaderTutorialStep(0); };
 
   // Share card generator
   const generateShareCard = async (): Promise<Blob | null> => {
@@ -1828,7 +1829,7 @@ const Mythology = () => {
       ctx.fillRect(0, 0, width, height);
 
       // Subtle vignette
-      const vignette = ctx.createRadialGradient(width/2, height/2, height/6, width/2, height/2, height/1.1);
+      const vignette = ctx.createRadialGradient(width / 2, height / 2, height / 6, width / 2, height / 2, height / 1.1);
       vignette.addColorStop(0, 'rgba(0,0,0,0)');
       vignette.addColorStop(1, 'rgba(0,0,0,0.5)');
       ctx.fillStyle = vignette;
@@ -1867,21 +1868,21 @@ const Mythology = () => {
       const lgx = width - (lgSize + 60);
       const lgy = 24;
       // Outer radial glow
-      let glow = ctx.createRadialGradient(lgx + lgSize/2, lgy + lgSize/2, 10, lgx + lgSize/2, lgy + lgSize/2, 170);
+      let glow = ctx.createRadialGradient(lgx + lgSize / 2, lgy + lgSize / 2, 10, lgx + lgSize / 2, lgy + lgSize / 2, 170);
       glow.addColorStop(0, 'rgba(255,255,255,0.5)');
       glow.addColorStop(0.4, 'rgba(255,255,255,0.2)');
       glow.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(lgx + lgSize/2, lgy + lgSize/2, 170, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(lgx + lgSize / 2, lgy + lgSize / 2, 170, 0, Math.PI * 2); ctx.fill();
       // Inner soft fade (spotlight)
-      const inner = ctx.createRadialGradient(lgx + lgSize/2, lgy + lgSize/2, 0, lgx + lgSize/2, lgy + lgSize/2, 110);
+      const inner = ctx.createRadialGradient(lgx + lgSize / 2, lgy + lgSize / 2, 0, lgx + lgSize / 2, lgy + lgSize / 2, 110);
       inner.addColorStop(0, 'rgba(255,255,255,0.15)');
       inner.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = inner; ctx.beginPath(); ctx.arc(lgx + lgSize/2, lgy + lgSize/2, 110, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = inner; ctx.beginPath(); ctx.arc(lgx + lgSize / 2, lgy + lgSize / 2, 110, 0, Math.PI * 2); ctx.fill();
       // Medallion image
       ctx.drawImage(logo, lgx, lgy, lgSize, lgSize);
       // Ring accent
       ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(lgx + lgSize/2, lgy + lgSize/2, lgSize/2 + 6, 0, Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(lgx + lgSize / 2, lgy + lgSize / 2, lgSize / 2 + 6, 0, Math.PI * 2); ctx.stroke();
 
       // Title (larger)
       ctx.fillStyle = '#FFFFFF'; ctx.font = '800 56px Inter, Segoe UI, sans-serif';
@@ -1902,9 +1903,9 @@ const Mythology = () => {
       ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.lineWidth = 1; roundedRect(bandX, bandY, bandW, bandH, 14); ctx.stroke();
       const dateStr = new Date().toLocaleString();
       ctx.font = '600 26px Inter, sans-serif'; ctx.fillStyle = '#E7EAF6';
-      ctx.fillText(`Published: ${dateStr}`, bandX + pad, bandY + 36 + pad/2);
+      ctx.fillText(`Published: ${dateStr}`, bandX + pad, bandY + 36 + pad / 2);
       ctx.font = '500 20px Inter, sans-serif'; ctx.fillStyle = '#C9CEEC';
-      ctx.fillText('NFTPD', bandX + pad, bandY + 64 + pad/2);
+      ctx.fillText('NFTPD', bandX + pad, bandY + 64 + pad / 2);
 
       // Return blob with fallback
       return await canvasToBlob();
@@ -1923,7 +1924,7 @@ const Mythology = () => {
                 onClick={() => setNavOpen(true)}
                 size="small"
                 aria-label="open navigator"
-              sx={{
+                sx={{
                   color: '#fff',
                   border: '1px solid rgba(255,255,255,0.18)',
                   backgroundColor: 'rgba(255,255,255,0.12)',
@@ -1991,9 +1992,9 @@ const Mythology = () => {
                     <StyledSelectComponent value={fontFamily} onChange={(e) => setFontFamily(e.target.value as string)}>
                       {fontOptions.map((font) => (
                         <MenuItem key={font.value} value={font.value}>{font.label}</MenuItem>
-                            ))}
-                          </StyledSelectComponent>
-                        </FormControl>
+                      ))}
+                    </StyledSelectComponent>
+                  </FormControl>
                 </Box>
               </>
             )}
@@ -2003,7 +2004,7 @@ const Mythology = () => {
         {/* Ribbon tabs bar (like Word: Home/Insert/etc.) */}
         {activeTab === 'publisher' && (
           <Stack direction="row" spacing={1} sx={{ mt: 1, mb: 1, flexWrap: 'wrap', overflowX: 'auto' }}>
-            {(['style','metadata','narrative','mood','publish'] as const).map((tab) => (
+            {(['style', 'metadata', 'narrative', 'mood', 'publish'] as const).map((tab) => (
               <Button
                 key={tab}
                 size="small"
@@ -2028,25 +2029,25 @@ const Mythology = () => {
           <Stack direction="row" spacing={2} alignItems="center">
             {activeTab === 'publisher' && publisherRibbon === 'style' && (
               <>
-                        <Box display="flex" alignItems="center" gap={1}>
+                <Box display="flex" alignItems="center" gap={1}>
                   <Typography variant="body2" sx={{ color: '#fff' }}>Font</Typography>
-                          <FormControl size="small" sx={{ minWidth: 120 }}>
+                  <FormControl size="small" sx={{ minWidth: 120 }}>
                     <StyledSelectComponent value={fontFamily} onChange={(e) => setFontFamily(e.target.value as string)}>
-                              {fontOptions.map((font) => (
-                                <MenuItem key={font.value} value={font.value}>{font.label}</MenuItem>
-                              ))}
-                            </StyledSelectComponent>
-                          </FormControl>
+                      {fontOptions.map((font) => (
+                        <MenuItem key={font.value} value={font.value}>{font.label}</MenuItem>
+                      ))}
+                    </StyledSelectComponent>
+                  </FormControl>
                   <Typography variant="body2" sx={{ color: '#fff' }}>Size</Typography>
                   <StyledSliderComponent value={fontSize} onChange={(e, v) => setFontSize(v as number)} min={14} max={24} step={1} sx={{ width: 100 }} />
-                        </Box>
-                        <Box display="flex" alignItems="center" gap={1}>
+                </Box>
+                <Box display="flex" alignItems="center" gap={1}>
                   <Typography variant="body2" sx={{ color: '#fff' }}>BG</Typography>
                   <Box display="flex" gap={1}>
                     {(['dark', 'light', 'sepia'] as BackgroundType[]).map((bg) => (
                       <ColorOption key={bg} color={backgroundColors[bg]} selected={selectedBackground === bg} onClick={() => setSelectedBackground(bg)} />
                     ))}
-                        </Box>
+                  </Box>
                 </Box>
               </>
             )}
@@ -2058,7 +2059,8 @@ const Mythology = () => {
                   onChange={(e) => setNewSectionData({ ...newSectionData, title: e.target.value })}
                   size="small"
                   inputRef={titleInputRef}
-                  sx={{ width: 240,
+                  sx={{
+                    width: 240,
                     '& .MuiOutlinedInput-notchedOutline': { borderColor: newSectionData.title ? '#ffffff' : undefined },
                     boxShadow: newSectionData.title ? `0 0 12px rgba(255,255,255,0.35)` : 'none'
                   }}
@@ -2069,7 +2071,8 @@ const Mythology = () => {
                   onChange={(e) => setNewSectionData({ ...newSectionData, mediaURI: e.target.value })}
                   size="small"
                   inputRef={mediaInputRef}
-                  sx={{ width: 280,
+                  sx={{
+                    width: 280,
                     '& .MuiOutlinedInput-notchedOutline': { borderColor: newSectionData.mediaURI ? '#ffffff' : undefined },
                     boxShadow: newSectionData.mediaURI ? `0 0 12px rgba(255,255,255,0.35)` : 'none'
                   }}
@@ -2118,8 +2121,8 @@ const Mythology = () => {
                     {newSectionData.keywords.map((k, i) => (
                       <Chip key={i} label={k} onDelete={() => setNewSectionData({ ...newSectionData, keywords: newSectionData.keywords.filter((x) => x !== k) })} size="small" sx={{ backgroundColor: 'rgba(255,255,255,0.12)', color: '#fff' }} />
                     ))}
-          </Box>
-        )}
+                  </Box>
+                )}
               </Stack>
             )}
             {activeTab === 'publisher' && publisherRibbon === 'narrative' && (
@@ -2127,31 +2130,31 @@ const Mythology = () => {
                 <FormControl size="small" sx={{ minWidth: 180 }}>
                   <InputLabel id="story-select-label" sx={{ color: '#fff' }}>Story</InputLabel>
                   <StyledSelectComponent labelId="story-select-label" value={selectedWriteStory} onChange={handleWriteStoryChange} label="Story">
-                      {stories.map((story) => (
+                    {stories.map((story) => (
                       <MenuItem key={story.id} value={story.id.toString()} sx={{ color: '#111' }}>{truncate(story.title, 30)}</MenuItem>
                     ))}
                     <MenuItem value="__add__" sx={{ color: '#111' }} onClick={() => setOpenAddStory(true)}>
                       <em>Add Story…</em>
                     </MenuItem>
-                    </StyledSelectComponent>
-                  </FormControl>
+                  </StyledSelectComponent>
+                </FormControl>
                 <FormControl size="small" sx={{ minWidth: 160 }} disabled={writeChapters.length === 0}>
                   <InputLabel id="write-chapter-select-label" sx={{ color: '#fff' }}>Chapter</InputLabel>
                   <StyledSelectComponent labelId="write-chapter-select-label" value={selectedWriteChapter} onChange={handleWriteChapterChange} label="Chapter">
-                      {writeChapters.map((chapter) => (
+                    {writeChapters.map((chapter) => (
                       <MenuItem key={chapter.id} value={chapter.id.toString()} sx={{ color: '#111' }}>{truncate(chapter.title, 30)}</MenuItem>
-                      ))}
-                    </StyledSelectComponent>
-                  </FormControl>
+                    ))}
+                  </StyledSelectComponent>
+                </FormControl>
                 <FormControl size="small" sx={{ minWidth: 160 }}>
                   <InputLabel id="write-section-select-label" sx={{ color: '#fff' }}>Section</InputLabel>
                   <StyledSelectComponent labelId="write-section-select-label" value={selectedWriteSection} onChange={(e) => { const sectionId = e.target.value as string; if (sectionId === 'add') { setConfirmNewSectionOpen(true); } else { handleWriteSectionChange(e, null); } }} label="Section">
-                      {writeSections.map((section) => (
+                    {writeSections.map((section) => (
                       <MenuItem key={section.id} value={section.id.toString()} sx={{ color: '#111' }}>{truncate(section.title, 30)}</MenuItem>
                     ))}
                     <MenuItem value="add" style={{ color: '#ffffff' }}><em>Add Section</em></MenuItem>
-                    </StyledSelectComponent>
-                  </FormControl>
+                  </StyledSelectComponent>
+                </FormControl>
                 {/* Add controls */}
                 <Button variant="contained" size="small" onClick={() => setOpenAddStory(true)} sx={{ backgroundColor: '#ffffff', color: '#000' }}>Add Story</Button>
                 <Button variant="contained" size="small" onClick={() => setOpenAddChapter(true)} disabled={!selectedWriteStory} sx={{ backgroundColor: '#ffffff', color: '#000' }}>Add Chapter</Button>
@@ -2172,30 +2175,30 @@ const Mythology = () => {
               <Stack direction="row" spacing={1} alignItems="center">
                 {/* Typing sound options only */}
                 <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1} ml={2}>
-                {soundOptions.map((option, index) => {
-                  const isSelected = typingSound === option.src;
-                  return (
+                  {soundOptions.map((option, index) => {
+                    const isSelected = typingSound === option.src;
+                    return (
                       <Tooltip key={index} title={option.hoverText}>
-                      <Button
-                        variant="contained"
-                        onClick={() => handleSoundSelection(option.src)}
+                        <Button
+                          variant="contained"
+                          onClick={() => handleSoundSelection(option.src)}
                           sx={{
-                          backgroundColor: option.color,
-                          borderRadius: '50%',
+                            backgroundColor: option.color,
+                            borderRadius: '50%',
                             width: 36,
                             height: 36,
-                          minWidth: 'unset',
-                          border: isSelected ? `2px solid ${accentColor}` : 'none',
-                          boxShadow: isSelected ? `0 0 10px ${accentColor}` : 'none',
+                            minWidth: 'unset',
+                            border: isSelected ? `2px solid ${accentColor}` : 'none',
+                            boxShadow: isSelected ? `0 0 10px ${accentColor}` : 'none',
                             p: 0,
-                        }}
-                      >
+                          }}
+                        >
                           <MusicNoteIcon sx={{ color: '#fff', fontSize: 18 }} />
-                      </Button>
+                        </Button>
                       </Tooltip>
-                  );
-                })}
-              </Box>
+                    );
+                  })}
+                </Box>
               </Stack>
             )}
             {activeTab === 'publisher' && publisherRibbon === 'publish' && (
@@ -2209,7 +2212,7 @@ const Mythology = () => {
                     } else {
                       await updateSection();
                     }
-                    try { localStorage.removeItem(draftKey); } catch {}
+                    try { localStorage.removeItem(draftKey); } catch { }
                   }}
                   disabled={!newSectionData.title.trim() || !newSectionData.body.trim() || !selectedWriteStory || !selectedWriteChapter}
                   sx={{ backgroundColor: '#ffffff', color: '#000' }}
@@ -2237,7 +2240,7 @@ const Mythology = () => {
                         URL.revokeObjectURL(url);
                         setInfoModal({ open: true, title: 'Card Ready', message: 'Share card downloaded to your device.' });
                       }
-                    } catch {}
+                    } catch { }
                   }}
                   sx={{ color: '#fff', borderColor: '#fff' }}
                   startIcon={<DownloadIcon />}
@@ -2277,22 +2280,22 @@ const Mythology = () => {
                     <List dense sx={{ color: '#fff' }}>
                       {stories.map((story) => (
                         <React.Fragment key={story.id}>
-                          <ListItem button selected={selectedStory === story.id.toString()} onClick={() => selectStory(story.id.toString())}>
+                          <ListItemButton selected={selectedStory === story.id.toString()} onClick={() => selectStory(story.id.toString())}>
                             <ListItemText primary={truncate(story.title, 36)} primaryTypographyProps={{ sx: { color: '#F3F6FF' } }} />
-                          </ListItem>
+                          </ListItemButton>
                           {selectedStory === story.id.toString() && (
                             <List disablePadding sx={{ pl: 2 }}>
                               {chapters.map((chapter) => (
                                 <React.Fragment key={chapter.id}>
-                                  <ListItem button selected={selectedChapter === chapter.id.toString()} onClick={() => selectChapter(chapter.id.toString())}>
+                                  <ListItemButton selected={selectedChapter === chapter.id.toString()} onClick={() => selectChapter(chapter.id.toString())}>
                                     <ListItemText primary={truncate(chapter.title, 34)} primaryTypographyProps={{ sx: { color: '#F3F6FF' } }} />
-                                  </ListItem>
+                                  </ListItemButton>
                                   {selectedChapter === chapter.id.toString() && (
                                     <List disablePadding sx={{ pl: 2 }}>
                                       {sections.map((section) => (
-                                        <ListItem key={section.id} button selected={selectedSection === section.id.toString()} onClick={() => { selectSection(section.id.toString()); setNavOpen(false); }}>
+                                        <ListItemButton key={section.id} selected={selectedSection === section.id.toString()} onClick={() => { selectSection(section.id.toString()); setNavOpen(false); }}>
                                           <ListItemText primary={truncate(section.title, 32)} primaryTypographyProps={{ sx: { color: '#F3F6FF' } }} />
-                                        </ListItem>
+                                        </ListItemButton>
                                       ))}
                                     </List>
                                   )}
@@ -2321,7 +2324,7 @@ const Mythology = () => {
                         <Box sx={{ mb: 2 }}><StyledImage src={mediaURI} alt="Section Media" /></Box>
                       )}
                       {content ? (
-                        <ReactMarkdown components={{ p: ({ node, ...props }) => <p {...props} /> }}>
+                        <ReactMarkdown components={{ p: ({ node, ...props }: any) => <p {...props} /> } as any}>
                           {content}
                         </ReactMarkdown>
                       ) : (
@@ -2335,14 +2338,14 @@ const Mythology = () => {
                               <ListItem key={i} sx={{ py: 0.25 }}><ListItemText primary={s} /></ListItem>
                             ))}
                           </List>
-                </Box>
+                        </Box>
                       )}
                       {viewerMeta.keywords?.length > 0 && (
                         <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                           {viewerMeta.keywords.map((k, i) => (
                             <Chip key={i} label={k} size="small" sx={{ backgroundColor: 'rgba(29, 245, 106, 0.2)', color: '#fff' }} />
-                  ))}
-                </Box>
+                          ))}
+                        </Box>
                       )}
                     </ContentArea>
                   ) : (
@@ -2359,15 +2362,15 @@ const Mythology = () => {
                           textShadow: '0 2px 18px rgba(255,255,255,0.25)'
                         }}>
                           The Mythology of NFTPD
-                </Typography>
+                        </Typography>
                         <Typography variant="subtitle1" sx={{ color: '#E0E0E0', mb: 1 }}>
                           Tales etched in light, carried by chains, and whispered through medallions.
                         </Typography>
                         <Box sx={{ mt: 1, width: '100%', display: 'flex', justifyContent: 'center', borderRadius: '10px' }}>
-                         <Box sx={{ maxWidth: 600, width: '100%', px: 2}}>
-                           <CoverImage src="/vision.jpg" sx={{borderRadius: '10px'}} alt="Mythology" />
-                         </Box>
-                       </Box>
+                          <Box sx={{ maxWidth: 600, width: '100%', px: 2 }}>
+                            <CoverImage src="/vision.jpg" sx={{ borderRadius: '10px' }} alt="Mythology" />
+                          </Box>
+                        </Box>
                         <Box sx={{ height: 1, width: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)', mt: -25, mb: 1 }} />
                         <Typography sx={{ color: '#E0E0E0', fontSize: '1rem', lineHeight: 1.6, px: { xs: 0, md: 2 } }}>
                           Begin by selecting a <strong>Story</strong> from the Library, choose a <strong>Chapter</strong>,
@@ -2377,7 +2380,7 @@ const Mythology = () => {
                         <Typography sx={{ color: '#BDBDBD', mt: 1, fontStyle: 'italic' }}>
                           — Every beginning is a doorway; step through.
                         </Typography>
-                        </Box>
+                      </Box>
                     </ContentArea>
                   )}
                 </Box>
@@ -2447,8 +2450,8 @@ const Mythology = () => {
                             {newSectionData.sources.map((s, i) => (
                               <Chip key={i} label={s} sx={{ backgroundColor: 'rgba(255,255,255,0.12)', color: '#fff' }} />
                             ))}
-                </Box>
-              </Box>
+                          </Box>
+                        </Box>
                       )}
                       {newSectionData.keywords.length > 0 && (
                         <Box>
@@ -2533,22 +2536,22 @@ const Mythology = () => {
             <List>
               {stories.map((story) => (
                 <React.Fragment key={story.id}>
-                  <ListItem button selected={selectedStory === story.id.toString()} onClick={() => selectStory(story.id.toString())}>
+                  <ListItemButton selected={selectedStory === story.id.toString()} onClick={() => selectStory(story.id.toString())}>
                     <ListItemText primary={truncate(story.title, 36)} primaryTypographyProps={{ sx: { color: '#111' } }} />
-                  </ListItem>
+                  </ListItemButton>
                   {selectedStory === story.id.toString() && (
                     <List disablePadding sx={{ pl: 2 }}>
                       {chapters.map((chapter) => (
                         <React.Fragment key={chapter.id}>
-                          <ListItem button selected={selectedChapter === chapter.id.toString()} onClick={() => selectChapter(chapter.id.toString())}>
+                          <ListItemButton selected={selectedChapter === chapter.id.toString()} onClick={() => selectChapter(chapter.id.toString())}>
                             <ListItemText primary={truncate(chapter.title, 34)} primaryTypographyProps={{ sx: { color: '#111' } }} />
-                          </ListItem>
+                          </ListItemButton>
                           {selectedChapter === chapter.id.toString() && (
                             <List disablePadding sx={{ pl: 2 }}>
                               {sections.map((section) => (
-                                <ListItem key={section.id} button selected={selectedSection === section.id.toString()} onClick={() => { selectSection(section.id.toString()); setNavOpen(false); }}>
+                                <ListItemButton key={section.id} selected={selectedSection === section.id.toString()} onClick={() => { selectSection(section.id.toString()); setNavOpen(false); }}>
                                   <ListItemText primary={truncate(section.title, 32)} primaryTypographyProps={{ sx: { color: '#111' } }} />
-                                </ListItem>
+                                </ListItemButton>
                               ))}
                             </List>
                           )}
@@ -2603,7 +2606,7 @@ const Mythology = () => {
           <DialogContent>
             <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
               {tutorialSteps.map((s, i) => (
-                <Button key={i} size="small" onClick={() => setTutorialStep(i)} sx={{ color: '#fff', textTransform: 'none', borderBottom: tutorialStep === i ? `2px solid ${accentColor}` : '2px solid transparent', borderRadius: 0 }}>{i+1}. {s.title}</Button>
+                <Button key={i} size="small" onClick={() => setTutorialStep(i)} sx={{ color: '#fff', textTransform: 'none', borderBottom: tutorialStep === i ? `2px solid ${accentColor}` : '2px solid transparent', borderRadius: 0 }}>{i + 1}. {s.title}</Button>
               ))}
             </Box>
             <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>{tutorialSteps[tutorialStep].title}</Typography>
@@ -2648,7 +2651,7 @@ const Mythology = () => {
           <DialogContent>
             <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
               {readerTutorialSteps.map((s, i) => (
-                <Button key={i} size="small" onClick={() => setReaderTutorialStep(i)} sx={{ color: '#fff', textTransform: 'none', borderBottom: readerTutorialStep === i ? `2px solid ${accentColor}` : '2px solid transparent', borderRadius: 0 }}>{i+1}. {s.title}</Button>
+                <Button key={i} size="small" onClick={() => setReaderTutorialStep(i)} sx={{ color: '#fff', textTransform: 'none', borderBottom: readerTutorialStep === i ? `2px solid ${accentColor}` : '2px solid transparent', borderRadius: 0 }}>{i + 1}. {s.title}</Button>
               ))}
             </Box>
             <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>{readerTutorialSteps[readerTutorialStep].title}</Typography>

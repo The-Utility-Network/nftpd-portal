@@ -4,9 +4,12 @@ declare module "*.mp3" {
 }
 
 declare module 'aframe-react' {
-import * as React from 'react';
-import { Component } from 'react';
+  import * as React from 'react';
+  import { Component } from 'react';
 
-export class Scene extends Component<any, any> {}
-export class Entity extends Component<any, any> {}
+  export class Scene extends Component<any, any> { }
+  export class Entity extends Component<any, any> { }
 }
+
+// React Three Fiber JSX augmentation for React 19 compatibility
+import '@react-three/fiber';

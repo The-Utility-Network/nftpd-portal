@@ -18,7 +18,7 @@ const removeFirstImageOrFigure = (htmlString: string) => {
 };
 
 const decodeHtml = (html: string) => {
-  const txt = document.createElement('textarea') as HTMLTextAreaElement;
+  const txt = document.createElement('textarea') as unknown as HTMLTextAreaElement;
   txt.innerHTML = html;
   return txt.value;
 };

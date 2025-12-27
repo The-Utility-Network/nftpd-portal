@@ -65,13 +65,16 @@ import axios from 'axios';
 import { getDiamondAddress } from '../primitives/Diamond';
 import { createThirdwebClient } from 'thirdweb';
 
+// Recharts components casted to any for React 19 JSX compatibility
+const [PieChartAny, PieAny, CellAny, TooltipAny, ResponsiveContainerAny, LineChartAny, LineAny, XAxisAny, YAxisAny, CartesianGridAny, LegendAny] = [PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend] as any[];
+
 // Initialize the client in-browser from server-provided clientId
 const clientPromise = (async () => {
   try {
     const r = await fetch('/api/thirdweb/client', { cache: 'no-store' });
     const j = await r.json();
     if (j?.clientId) return createThirdwebClient({ clientId: j.clientId });
-  } catch {}
+  } catch { }
   return null;
 })();
 
@@ -83,7 +86,7 @@ const getContractAddress = async () => {
 };
 
 // ABI
-const abi: any = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"subsidiaryAddress","type":"address"}],"name":"BeneficiariesSynced","type":"event"},{"anonymous":false,"inputs":[],"name":"BeneficiariesWiped","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiaryAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"split","type":"uint256"},{"indexed":false,"internalType":"string","name":"role","type":"string"}],"name":"BeneficiaryAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiaryAddress","type":"address"}],"name":"BeneficiaryRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiaryAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"split","type":"uint256"},{"indexed":false,"internalType":"string","name":"role","type":"string"}],"name":"BeneficiaryUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"string","name":"note","type":"string"}],"name":"FundsDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"percentage","type":"uint256"},{"indexed":false,"internalType":"string","name":"note","type":"string"}],"name":"FundsSentToUtilityCoDiamond","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newPercentage","type":"uint256"}],"name":"ReserveWithdrawalPercentageUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":true,"internalType":"address","name":"to","type":"address"}],"name":"Withdrawal","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newInterval","type":"uint256"}],"name":"WithdrawalIntervalUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newLimit","type":"uint256"}],"name":"WithdrawalLimitUpdated","type":"event"},{"inputs":[{"internalType":"address","name":"beneficiaryAddress","type":"address"},{"internalType":"uint256","name":"split","type":"uint256"},{"internalType":"string","name":"role","type":"string"}],"name":"addBeneficiary","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"note","type":"string"}],"name":"depositFunds","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"getBeneficiaries","outputs":[{"components":[{"internalType":"address","name":"beneficiaryAddress","type":"address"},{"internalType":"uint256","name":"split","type":"uint256"},{"internalType":"string","name":"role","type":"string"}],"internalType":"struct InvisibleEnemiesReserve.Beneficiary[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pullBeneficiariesFromUtilityCoDiamond","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"removeBeneficiaryByIndex","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"percentage","type":"uint256"},{"internalType":"string","name":"note","type":"string"}],"name":"sendFundsToUtilityCoDiamond","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newPercentage","type":"uint256"}],"name":"setReserveWithdrawalPercentage","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newInterval","type":"uint256"}],"name":"setWithdrawalInterval","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newLimit","type":"uint256"}],"name":"setWithdrawalLimit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"updateAndSyncBeneficiaries","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiaryAddress","type":"address"},{"internalType":"uint256","name":"split","type":"uint256"},{"internalType":"string","name":"role","type":"string"}],"name":"updateBeneficiary","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"wipeBeneficiaries","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"role","type":"string"},{"internalType":"address","name":"account","type":"address"}],"name":"ieHasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}] as const;
+const abi: any = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "subsidiaryAddress", "type": "address" }], "name": "BeneficiariesSynced", "type": "event" }, { "anonymous": false, "inputs": [], "name": "BeneficiariesWiped", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "beneficiaryAddress", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "split", "type": "uint256" }, { "indexed": false, "internalType": "string", "name": "role", "type": "string" }], "name": "BeneficiaryAdded", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "beneficiaryAddress", "type": "address" }], "name": "BeneficiaryRemoved", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "beneficiaryAddress", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "split", "type": "uint256" }, { "indexed": false, "internalType": "string", "name": "role", "type": "string" }], "name": "BeneficiaryUpdated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "string", "name": "note", "type": "string" }], "name": "FundsDeposited", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "percentage", "type": "uint256" }, { "indexed": false, "internalType": "string", "name": "note", "type": "string" }], "name": "FundsSentToUtilityCoDiamond", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "newPercentage", "type": "uint256" }], "name": "ReserveWithdrawalPercentageUpdated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }], "name": "Withdrawal", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "newInterval", "type": "uint256" }], "name": "WithdrawalIntervalUpdated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "newLimit", "type": "uint256" }], "name": "WithdrawalLimitUpdated", "type": "event" }, { "inputs": [{ "internalType": "address", "name": "beneficiaryAddress", "type": "address" }, { "internalType": "uint256", "name": "split", "type": "uint256" }, { "internalType": "string", "name": "role", "type": "string" }], "name": "addBeneficiary", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "note", "type": "string" }], "name": "depositFunds", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [], "name": "getBeneficiaries", "outputs": [{ "components": [{ "internalType": "address", "name": "beneficiaryAddress", "type": "address" }, { "internalType": "uint256", "name": "split", "type": "uint256" }, { "internalType": "string", "name": "role", "type": "string" }], "internalType": "struct InvisibleEnemiesReserve.Beneficiary[]", "name": "", "type": "tuple[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "pullBeneficiariesFromUtilityCoDiamond", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "removeBeneficiaryByIndex", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "percentage", "type": "uint256" }, { "internalType": "string", "name": "note", "type": "string" }], "name": "sendFundsToUtilityCoDiamond", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "newPercentage", "type": "uint256" }], "name": "setReserveWithdrawalPercentage", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "newInterval", "type": "uint256" }], "name": "setWithdrawalInterval", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "newLimit", "type": "uint256" }], "name": "setWithdrawalLimit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "updateAndSyncBeneficiaries", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "beneficiaryAddress", "type": "address" }, { "internalType": "uint256", "name": "split", "type": "uint256" }, { "internalType": "string", "name": "role", "type": "string" }], "name": "updateBeneficiary", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "wipeBeneficiaries", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "role", "type": "string" }, { "internalType": "address", "name": "account", "type": "address" }], "name": "ieHasRole", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }] as const;
 
 // Role Definition
 const CHIEF_OF_POLICE_ROLE = 'Commander';
@@ -277,7 +280,7 @@ const Reserve = () => {
           usdc: Number(j?.['usd-coin']?.usd || 1),
           cbbtc: Number(j?.bitcoin?.usd || 0),
         });
-      } catch {}
+      } catch { }
     };
     load();
     timer = setInterval(load, 1000 * 60 * 5);
@@ -384,7 +387,7 @@ const Reserve = () => {
             const erc20 = getContract({ client, chain: base, address: tokenAddress, abi: erc20Abi as any });
             const d = await (readContract as any)({ contract: erc20, method: 'decimals' });
             decimals = Number(d || 18);
-          } catch {}
+          } catch { }
           let running = 0n;
           const points: any[] = [];
           const sorted = json.result.sort((a: any, b: any) => Number(a.timeStamp) - Number(b.timeStamp));
@@ -460,7 +463,7 @@ const Reserve = () => {
         setCbbtcBalanceNum(cbbtcBal);
         setUsdcBalance(usdcBal.toLocaleString(undefined, { maximumFractionDigits: 4 }));
         setCbbtcBalance(cbbtcBal.toLocaleString(undefined, { maximumFractionDigits: 6 }));
-      } catch {}
+      } catch { }
     } catch (error) {
       console.error('Error fetching transaction data:', error);
     }
@@ -524,8 +527,7 @@ const Reserve = () => {
         console.log(
           `After txn ${txn.hash}: Balance = ${formatEther(
             balance.toString()
-          )} ETH, Change = ${
-            percentageChange !== null ? percentageChange.toFixed(2) + '%' : 'N/A'
+          )} ETH, Change = ${percentageChange !== null ? percentageChange.toFixed(2) + '%' : 'N/A'
           }`
         );
       });
@@ -789,9 +791,9 @@ const Reserve = () => {
     }));
 
     return (
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
+      <ResponsiveContainerAny width="100%" height={300}>
+        <PieChartAny>
+          <PieAny
             data={data}
             dataKey="value"
             nameKey="name"
@@ -802,13 +804,13 @@ const Reserve = () => {
             fill="#8884d8"
             label
           >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#121212" />
+            {data.map((entry: any, index: number) => (
+              <CellAny key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#121212" />
             ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
-      </ResponsiveContainer>
+          </PieAny>
+          <TooltipAny />
+        </PieChartAny>
+      </ResponsiveContainerAny>
     );
   };
 
@@ -876,8 +878,8 @@ const Reserve = () => {
     if (!balanceHistory || balanceHistory.length === 0) return null;
 
     return (
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart
+      <ResponsiveContainerAny width="100%" height={300}>
+        <LineChartAny
           data={balanceHistory}
           margin={{ top: 20, right: 20, bottom: -20, left: -40 }} // Even padding
         >
@@ -895,23 +897,23 @@ const Reserve = () => {
           {/* Remove grid by omitting CartesianGrid */}
 
           {/* X Axis without ticks and labels */}
-          <XAxis
+          <XAxisAny
             dataKey="timestamp"
             tick={false}
             axisLine={false}
           />
 
           {/* Y Axis without ticks and labels */}
-          <YAxis
+          <YAxisAny
             tick={false}
             axisLine={false}
           />
 
           {/* Custom Tooltip */}
-          <Tooltip content={<CustomTooltip />} />
+          <TooltipAny content={<CustomTooltip />} />
 
           {/* Line with customized dots and glow effect */}
-          <Line
+          <LineAny
             type="monotone"
             dataKey="balance"
             stroke="#c229f5" // Line color
@@ -920,8 +922,8 @@ const Reserve = () => {
             activeDot={{ r: 6, fill: '#c229f5', stroke: 'none' }}
             filter="url(#glow)" // Apply glow filter
           />
-        </LineChart>
-      </ResponsiveContainer>
+        </LineChartAny>
+      </ResponsiveContainerAny>
     );
   };
 
@@ -982,7 +984,7 @@ const Reserve = () => {
                             <span style={{ fontSize: 10, color: '#E0E0E0' }}>{TOKEN_SYMBOLS.CBBTC}</span> {cbbtcBalance}
                           </StyledTypography>
                           <StyledTypography variant="body2" sx={{ opacity: 0.95, display: 'flex', gap: 0.75, alignItems: 'baseline', whiteSpace: 'nowrap' }}>
-                            <span style={{ fontSize: 10, color: '#E0E0E0' }}>$</span> {(ethBalanceNum*pricesUSD.eth + usdcBalanceNum*pricesUSD.usdc + cbbtcBalanceNum*pricesUSD.cbbtc).toLocaleString(undefined,{maximumFractionDigits:2})}
+                            <span style={{ fontSize: 10, color: '#E0E0E0' }}>$</span> {(ethBalanceNum * pricesUSD.eth + usdcBalanceNum * pricesUSD.usdc + cbbtcBalanceNum * pricesUSD.cbbtc).toLocaleString(undefined, { maximumFractionDigits: 2 })}
                           </StyledTypography>
                         </Box>
                       </Box>
@@ -1046,36 +1048,36 @@ const Reserve = () => {
                   <span style={{ fontSize: 10, color: '#E0E0E0' }}>LEGEND:</span> ETH, USDC, cbBTC
                 </StyledTypography>
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                  <ResponsiveContainer width="95%" height={320}>
-                    <LineChart data={balanceHistory} margin={{ top: 8, right: 16, bottom: 8, left: 16 }}>
-                    <defs>
-                      <filter id="glowP" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                        <feMerge>
-                          <feMergeNode in="coloredBlur" />
-                          <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                      </filter>
-                    </defs>
-                    <XAxis dataKey="timestamp" tick={false} axisLine={false} />
-                    <YAxis tick={false} axisLine={false} />
-                    <Tooltip content={({ active, payload }) => {
-                      if (!active || !payload || !payload.length) return null as any;
-                      const p:any = payload[0].payload;
-                      return (
-                        <div style={{ background: '#121212', color: '#fff', padding: 10, borderRadius: 8, boxShadow: '0 0 10px rgba(0,0,0,0.5)' }}>
-                          <div style={{ fontSize: 12, opacity: 0.9 }}>{p.timestamp}</div>
-                          <div style={{ fontSize: 12 }}>ETH: {Number(p.balance).toLocaleString(undefined,{maximumFractionDigits:4})}</div>
-                          <div style={{ fontSize: 12 }}>USDC: {Number(p.usdc||0).toLocaleString(undefined,{maximumFractionDigits:2})}</div>
-                          <div style={{ fontSize: 12 }}>cbBTC: {Number(p.cbbtc||0).toLocaleString(undefined,{maximumFractionDigits:6})}</div>
-                        </div>
-                      ) as any;
-                    }} />
-                    <Line type="monotone" dataKey="balance" stroke="#ffffff" strokeWidth={3} dot={false} filter="url(#glowP)" />
-                    <Line type="monotone" dataKey="usdc" stroke="#cccccc" strokeWidth={2} dot={false} opacity={0.9} />
-                    <Line type="monotone" dataKey="cbbtc" stroke="#999999" strokeWidth={2} dot={false} opacity={0.9} />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  <ResponsiveContainerAny width="95%" height={320}>
+                    <LineChartAny data={balanceHistory} margin={{ top: 8, right: 16, bottom: 8, left: 16 }}>
+                      <defs>
+                        <filter id="glowP" x="-20%" y="-20%" width="140%" height="140%">
+                          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                          <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                          </feMerge>
+                        </filter>
+                      </defs>
+                      <XAxisAny dataKey="timestamp" tick={false} axisLine={false} />
+                      <YAxisAny tick={false} axisLine={false} />
+                      <TooltipAny content={({ active, payload }: any) => {
+                        if (!active || !payload || !payload.length) return null as any;
+                        const p: any = payload[0].payload;
+                        return (
+                          <div style={{ background: '#121212', color: '#fff', padding: 10, borderRadius: 8, boxShadow: '0 0 10px rgba(0,0,0,0.5)' }}>
+                            <div style={{ fontSize: 12, opacity: 0.9 }}>{p.timestamp}</div>
+                            <div style={{ fontSize: 12 }}>ETH: {Number(p.balance).toLocaleString(undefined, { maximumFractionDigits: 4 })}</div>
+                            <div style={{ fontSize: 12 }}>USDC: {Number(p.usdc || 0).toLocaleString(undefined, { maximumFractionDigits: 2 })}</div>
+                            <div style={{ fontSize: 12 }}>cbBTC: {Number(p.cbbtc || 0).toLocaleString(undefined, { maximumFractionDigits: 6 })}</div>
+                          </div>
+                        ) as any;
+                      }} />
+                      <LineAny type="monotone" dataKey="balance" stroke="#ffffff" strokeWidth={3} dot={false} filter="url(#glowP)" />
+                      <LineAny type="monotone" dataKey="usdc" stroke="#cccccc" strokeWidth={2} dot={false} opacity={0.9} />
+                      <LineAny type="monotone" dataKey="cbbtc" stroke="#999999" strokeWidth={2} dot={false} opacity={0.9} />
+                    </LineChartAny>
+                  </ResponsiveContainerAny>
                 </Box>
               </CardContent>
             </StyledCard>
@@ -1120,10 +1122,10 @@ const Reserve = () => {
                     <StyledButton
                       variant="contained"
                       startIcon={<UpdateIcon />}
-                    //   onClick={() => {
-                    //     setSelectedFunction('updateAndSyncBeneficiaries');
-                    //     setOpenWriteFunctionDialog(true);
-                    //   }}
+                      //   onClick={() => {
+                      //     setSelectedFunction('updateAndSyncBeneficiaries');
+                      //     setOpenWriteFunctionDialog(true);
+                      //   }}
                       color="primary"
                     >
                       Sync Beneficiaries
@@ -1266,11 +1268,11 @@ const Reserve = () => {
                   <Grid item xs={12} sm={6}>
                     <StyledButton
                       variant="contained"
-                    //   startIcon={<SyncIcon />}
-                    //   onClick={() => {
-                    //     setSelectedFunction('updateAndSyncBeneficiaries');
-                    //     setOpenWriteFunctionDialog(true);
-                    //   }}
+                      //   startIcon={<SyncIcon />}
+                      //   onClick={() => {
+                      //     setSelectedFunction('updateAndSyncBeneficiaries');
+                      //     setOpenWriteFunctionDialog(true);
+                      //   }}
                       fullWidth
                       color="info"
                     >
@@ -1515,11 +1517,11 @@ function DonateButton() {
         const resp = await fetch('/api/thirdweb/client', { cache: 'no-store' });
         const json = await resp.json();
         if (json?.clientId) setClientId(json.clientId);
-      } catch {}
+      } catch { }
       try {
         const addr = await getDiamondAddress();
         setDiamondAddr(addr);
-      } catch {}
+      } catch { }
     })();
   }, []);
 
@@ -1553,7 +1555,7 @@ function DonateButton() {
         next.USDC = usdcSym || 'USDC';
         next.cbBTC = cbbtcSym || 'cbBTC';
         setSymbols(next);
-      } catch {}
+      } catch { }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1611,7 +1613,7 @@ function DonateButton() {
     try {
       const d = await (readContract as any)({ contract: erc20, method: 'decimals' });
       decimals = Number(d || 18);
-    } catch {}
+    } catch { }
     const amt = parseUnits(amountEth || '0', decimals);
     if (amt <= 0n) {
       throw new Error('Enter an amount greater than 0');
